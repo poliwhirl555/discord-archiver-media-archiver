@@ -10,7 +10,17 @@ Please run this tool either **immediately** after downloading the archive via [D
 
 ## Installation
 
-<!-- Finish later -->
+Install from pip with the following command
+
+```
+pip install discord-archiver-media-archiver
+```
+
+Can also be run as a python script via
+
+```
+python3 media_archiver.py "archive name"
+```
 
 
 ## Usage
