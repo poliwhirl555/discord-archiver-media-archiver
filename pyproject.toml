@@ -1,6 +1,6 @@
 [project]
 name = "discord-archiver-media-archiver"
-version = "1.0.1"
+version = "1.0.2"
 description = "Simple program to download and replace Discord CDN weblinks from the output of Discord Archiver with hard, on drive path links to maintain media access after the CDN links expire. Has additional functionality for downloading gifs from Tenor"
 readme = "README.md"
 requires-python = ">=3.13"
