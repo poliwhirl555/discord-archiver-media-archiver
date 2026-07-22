@@ -122,7 +122,7 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("archive", type = str, help = "the Discord archive in the current working directory to archive media from")
-    parser.add_argument("-g", "--gifs", action = "store_true", default = False, help = "enable the download and archival of gifs from Tenor or GIPHY while archiving")
+    parser.add_argument("-g", "--gifs", action = "store_true", default = False, help = "enable the download and archival of gifs from Tenor while archiving")
     parser.add_argument("-ndc", "--no-discord-cdn", action = "store_false", default = True, help = "disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)")
     parser.add_argument("-gl", "--gif-links", action = "store_true", default = False, help = "replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)")
     args = parser.parse_args()

@@ -33,7 +33,7 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  -g, --gifs            enable the download and archival of gifs from Tenor or GIPHY while archiving
+  -g, --gifs            enable the download and archival of gifs from Tenor while archiving
   -ndc, --no-discord-cdn
                         disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)
   -gl, --gif-links      replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)
