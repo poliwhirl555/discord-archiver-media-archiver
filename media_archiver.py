@@ -17,6 +17,10 @@ class CDN_Media:
         if fetch:
             print(media_link)
             r = requests.get(media_link, timeout= 30)
+            if r.status_code == 404:
+                print("content not found")
+
+        
         self.link = media_link
         self.name = self.get_media_name(media_link)
 
