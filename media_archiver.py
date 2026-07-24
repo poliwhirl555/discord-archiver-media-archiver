@@ -12,7 +12,7 @@ class CDN_Media:
     # Set to keep track of names and avoid duplicate names
     used_names = set()
 
-    def __init__(self, media_link: str, save_location: Path, fetch = True):
+    def __init__(self, media_link: str, save_location: Path, fetch = True, gif = False):
 
         if fetch:
             print(media_link)
@@ -44,14 +44,22 @@ class CDN_Media:
                 self.name = self.name[:dash] + "-" + str(number_add) + self.name[period : ]
 
         CDN_Media.used_names.add(self.name)
-        self.path = save_location / self.name
+
+        if gif:
+            self.path = save_location / "gifs" / self.name
+        else:
+            self.path = save_location / self.name
+        
 
         if fetch: 
             with open(self.path, "wb")  as file:
                 file.write(r.content)
 
         # Need to change the path back in order to have the proper relative path for the html file once copied.
-        self.path = Path(save_location.stem) / self.name
+        if gif:
+            self.path = Path(save_location.stem) / "gifs" / self.name
+        else:
+            self.path = Path(save_location.stem) / self.name
 
 
     def get_media_name(self, media_link):
@@ -79,12 +87,15 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
     compile_folder.mkdir(exist_ok= True)
     media_folder = compile_folder / Path(f"media_{archive_name[:-5]}")
     media_folder.mkdir(exist_ok= True)
+    if do_gifs:
+        gif_folder = media_folder / "gifs"
+        gif_folder.mkdir(exist_ok = True)
     destination = compile_folder / archive_name
 
     with open(archive_name, "r", encoding="utf-8") as file, open(destination, "w", encoding="utf-8") as out:
         already_loaded = {}
-        cdn_link_pattern = re.compile(r"\"https://cdn.discordapp.com/[^\"]*\"")
-        gif_link_pattern = re.compile(r"\"https?://tenor.com/view/[^\"]*\"")
+        cdn_link_pattern = re.compile(r"(?:\"|\')https://cdn.discordapp.com/[^\"]*(?:\"|\')")
+        gif_link_pattern = re.compile(r"(?:\"|\')https?://tenor.com/view/[^\"]*(?:\"|\')")
         for line in file:
 
             line_urls = []
@@ -111,7 +122,7 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
                 loaded_media = already_loaded.get(link)
                 if not loaded_media:
                     load = not (is_gif and do_gif_links) # Don't load if gif links flag is True and it is a gif, else default to loading
-                    loaded_media = CDN_Media(link, media_folder, load)
+                    loaded_media = CDN_Media(link, media_folder, load, is_gif)
                     already_loaded[link] = loaded_media
                 
                 if is_gif and not do_gif_links:
