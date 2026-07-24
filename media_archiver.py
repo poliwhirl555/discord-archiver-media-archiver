@@ -94,7 +94,7 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
 
     with open(archive_name, "r", encoding="utf-8") as file, open(destination, "w", encoding="utf-8") as out:
         already_loaded = {}
-        cdn_link_pattern = re.compile(r"(?:\"|\')https://cdn.discordapp.com/[^\"]*(?:\"|\')")
+        cdn_link_pattern = re.compile(r"(?:\"|\')https?://(?:cdn|media)\.discordapp\.(?:com|net)/[^\"\']*(?:\"|\')")
         gif_link_pattern = re.compile(r"(?:\"|\')https?://tenor.com/view/[^\"]*(?:\"|\')")
         for line in file:
 
