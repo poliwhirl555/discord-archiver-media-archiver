@@ -14,6 +14,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["media_archiver.py"]
+exclude = [
+    "*.html",
+    "/archive_(349) Test Chat Gif Discord_2026-07-20"
+]
 
 [project.scripts]
 da-ma = "cdn_archiver:main"
