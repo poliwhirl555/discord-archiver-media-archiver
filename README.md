@@ -1,3 +1,4 @@
+# Discord Archiver Media Archiver
 Meant to be used in conjunction with [Discord Archiver](https://github.com/rroy676/Discord-Archiver/)
 
 A simple script and command line tool to archive the Discord media from Discord CDN links in archived chats, along with options for archiving Tenor gifs in the chat, or replacing the embed Tenor view links with direct media links to make the chat look nicer.
