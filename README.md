@@ -27,7 +27,7 @@ python3 media_archiver.py "archive name"
 ## Usage
 
 ```
-usage: cdn_archiver.py [-h] [-g] [-ndc] [-gl] archive
+usage: media_archiver.py [-h] [-g] [-ndc] [-gl] [-r [REFRESH]] archive
 
 positional arguments:
   archive               the Discord archive in the current working directory to archive media from
@@ -36,8 +36,12 @@ options:
   -h, --help            show this help message and exit
   -g, --gifs            enable the download and archival of gifs from Tenor while archiving
   -ndc, --no-discord-cdn
-                        disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)
+                        disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just
+                        want to archive gifs)
   -gl, --gif-links      replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)
+  -r, --refresh [REFRESH]
+                        refresh the cdn links in the file with new ones. Uses the entered Discord auth token, or defaults to the environmental
+                        variable DISCORD_TOKEN if none entered
 ```
 
 ## Examples
