@@ -3,6 +3,7 @@ import requests
 import html
 import argparse
 import os
+import sys
 import disc_link_refresher
 from pathlib import Path
 
@@ -163,11 +164,40 @@ def main():
     parser.add_argument("-gl", "--gif-links", action = "store_true", default = False, help = "replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)")
     parser.add_argument("-r", "--refresh", action = "store", nargs= "?", const = "", default = False, help = "refresh the cdn links in the file with new ones. Uses the entered Discord auth token, or defaults to the environmental variable DISCORD_TOKEN if none entered")
     args = parser.parse_args()
-    if args.refresh == "":
-        args.refresh = os.environ["DISCORD_TOKEN"]
+    if len(sys.argv) > 1:
+        if args.refresh == "":
+            args.refresh = os.environ["DISCORD_TOKEN"]
+        else:
+            args.refresh = ""
+        archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
     else:
-        args.refresh = ""
-    archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
+        print("Welcome to the Discord Archiver Media Archiver")
+        while True:
+            archive_name = ""
+            while archive_name == "":
+                print("Please enter the name of the archive you wish to archive from (including the file extension, i.e. .html):")
+                archive_name = input()
+
+            refresh_token = ""
+            while refresh_token == "":
+                print("Would you like to refresh the links in this file? If so, please enter the Discord authorization token now.")
+                print("Otherwise, enter \'n\'")
+                refresh_token = input()
+
+                if refresh_token.lower() == "n":
+                    break
+
+            do_gifs = None
+            while do_gifs == None:
+                print("Would you like to archive the gifs? [Y/n]")
+                gif_option_input = input().lower()
+                if gif_option_input == "y":
+                    do_gifs = True
+                elif gif_option_input == "n":
+                    do_gifs = False
+
+            print("Archiving...")
+            archive_media(archive_name, do_gifs = do_gifs, refresh_token = refresh_token)
 
 
 if __name__ == "__main__":
