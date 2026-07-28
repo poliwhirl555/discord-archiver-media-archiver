@@ -124,7 +124,7 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
                 loaded_media = already_loaded.get(link)
                 if not loaded_media:
                     load = not (is_gif and do_gif_links) # Don't load if gif links flag is True and it is a gif, else default to loading
-                    if refresh_token and not is_gif: # If auth token in refresh is not blank
+                    if refresh_token and not is_gif: # If auth token in refresh is not blank and is not a gif
                         new_link = disc_link_refresher.refresh_cdn_link(link, refresh_token)
                         loaded_media = CDN_Media(new_link, media_folder, load, is_gif)
                         loaded_media.link = link
