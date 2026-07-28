@@ -2,6 +2,8 @@ import re
 import requests
 import html
 import argparse
+import os
+import disc_link_refresher
 from pathlib import Path
 
 class CDN_Media:
@@ -82,7 +84,7 @@ def fetch_tenor_media_link(tenor_view_link : str):
         return found.group()
     
 
-def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_links = False):
+def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_links = False, refresh_token = ""):
     compile_folder = Path(f"{archive_name[:-5]}") # Remove the .html from the end
     compile_folder.mkdir(exist_ok= True)
     media_folder = compile_folder / Path(f"media_{archive_name[:-5]}")
@@ -122,7 +124,12 @@ def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_link
                 loaded_media = already_loaded.get(link)
                 if not loaded_media:
                     load = not (is_gif and do_gif_links) # Don't load if gif links flag is True and it is a gif, else default to loading
-                    loaded_media = CDN_Media(link, media_folder, load, is_gif)
+                    if refresh_token and not is_gif: # If auth token in refresh is not blank
+                        new_link = disc_link_refresher.refresh_cdn_link(link, refresh_token)
+                        loaded_media = CDN_Media(new_link, media_folder, load, is_gif)
+                        loaded_media.link = link
+                    else:
+                        loaded_media = CDN_Media(link, media_folder, load, is_gif)
                     already_loaded[link] = loaded_media
                 
                 if is_gif and not do_gif_links:
@@ -140,8 +147,11 @@ def main():
     parser.add_argument("-g", "--gifs", action = "store_true", default = False, help = "enable the download and archival of gifs from Tenor while archiving")
     parser.add_argument("-ndc", "--no-discord-cdn", action = "store_false", default = True, help = "disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)")
     parser.add_argument("-gl", "--gif-links", action = "store_true", default = False, help = "replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)")
+    parser.add_argument("-r", "--refresh", action = "store", nargs= "?", const = "", default = False, help = "refresh the cdn links in the file with new ones. Uses the entered Discord auth token, or defaults to the environmental variable DISCORD_TOKEN if none entered")
     args = parser.parse_args()
-    archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links)
+    if args.refresh == "":
+        args.refresh = os.environ["DISCORD_TOKEN"]
+    archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
 
 
 if __name__ == "__main__":
