@@ -84,7 +84,21 @@ def fetch_tenor_media_link(tenor_view_link : str):
         return found.group()
     
 
-def archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_links = False, refresh_token = ""):
+def archive_media(archive_name: str, do_cdn : bool = True, do_gifs : bool = False, do_gif_links : bool = False, refresh_token : str = ""):
+    """
+    Archive all the media from a given html and replace all cdn web links in the html with local file paths.
+        
+    :param archive_name: name of archive file to replace and archive the media from
+    :type archive_name: str
+    :param do_cdn: whether to archive from Discord CDN Links (default True)
+    :type do_cdn: bool
+    :param do_gifs: whether to archive gifs from TENOR (default False)
+    :type do_gifs: bool
+    :param do_gif_links: whether to not archive gifs but just replace the gif embed links with true TENOR media links (default False, overrides do_gifs)
+    :type do_gif_links: bool
+    :param refresh_token: if provided, refresh Discord CDN links in the file using the provided Discord authentication token
+    :type refresh_token: str
+    """
     compile_folder = Path(f"{archive_name[:-5]}") # Remove the .html from the end
     compile_folder.mkdir(exist_ok= True)
     media_folder = compile_folder / Path(f"media_{archive_name[:-5]}")
@@ -151,6 +165,8 @@ def main():
     args = parser.parse_args()
     if args.refresh == "":
         args.refresh = os.environ["DISCORD_TOKEN"]
+    else:
+        args.refresh = ""
     archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
 
 

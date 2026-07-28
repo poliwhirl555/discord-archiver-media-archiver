@@ -73,12 +73,34 @@ Since this was written in Python, you can also import the package media_archiver
 
 The core methods are:
 ```python
-archive_media(archive_name: str, do_cdn = True, do_gifs = False, do_gif_links = False)
+def archive_media(archive_name: str, do_cdn : bool = True, do_gifs : bool = False, do_gif_links : bool = False, refresh_token : str = ""):
+    """
+    Archive all the media from a given html and replace all cdn web links in the html with local file paths.
+        
+    :param archive_name: name of archive file to replace and archive the media from
+    :type archive_name: str
+    :param do_cdn: whether to archive from Discord CDN Links (default True)
+    :type do_cdn: bool
+    :param do_gifs: whether to archive gifs from TENOR (default False)
+    :type do_gifs: bool
+    :param do_gif_links: whether to not archive gifs but just replace the gif embed links with true TENOR media links (default False, overrides do_gifs)
+    :type do_gif_links: bool
+    :param refresh_token: if provided, refresh Discord CDN links in the file using the provided Discord authentication token
+    :type refresh_token: str
+    """
 
-fetch_tenor_media_link(tenor_view_link : str)
+def fetch_tenor_media_link(tenor_view_link : str)
 # Convert from a Tenor view link to a Tenor direct media link
 
 class CDN_Media(media_link: str, save_location: Path, fetch = True)
 # Downloads media from media_link upon creation unless fetch is set to false, so be careful.
 # Despite the name, does still work on gifs
 ```
+
+## Changelog
+
+### V 1.0.4
+- Changed the Regex string for the Discord CDN URLs to be more robust and to capture other types such as the one used in the non-web app, although how useful that is, that is to be seen.
+
+### V 2.0.0
+- Added functionality to refresh links via (discord_cdn_link_refresher)[https://github.com/poliwhirl555/discord-cdn-link-refresher]
