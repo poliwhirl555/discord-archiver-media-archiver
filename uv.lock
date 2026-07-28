@@ -64,11 +64,28 @@ name = "discord-archiver-media-archiver"
 version = "1.0.4"
 source = { editable = "." }
 dependencies = [
+    { name = "discord-cdn-link-refresher" },
     { name = "requests" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "requests", specifier = ">=2.34.2" }]
+requires-dist = [
+    { name = "discord-cdn-link-refresher", specifier = ">=1.0.1" },
+    { name = "requests", specifier = ">=2.34.2" },
+]
+
+[[package]]
+name = "discord-cdn-link-refresher"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyperclip" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bb/32/03c8856672721f2e15526c577e4e20e9c9752cdd9ad4c3d99354f7452cb5/discord_cdn_link_refresher-1.0.1.tar.gz", hash = "sha256:14697d906849d9eb0b5d3f22e253487c5f9e94a5101c432954480043ce77d82e", size = 7547019, upload-time = "2026-07-27T06:55:29.366Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/63/45/266c5c932982460db6b7c68f5fa2a3bbfa1bd381a7740a9c34dec35bd076/discord_cdn_link_refresher-1.0.1-py3-none-any.whl", hash = "sha256:038849511af5fffd4c635c8f27a354ec74de8e519d2722cf394ff49e3a780119", size = 12821, upload-time = "2026-07-27T06:55:30.769Z" },
+]
 
 [[package]]
 name = "idna"
@@ -77,6 +94,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cd/63/9496c57188a2ee585e0f1db071d75089a11e98aa86eb99d9d7618fc1edce/idna-3.18.tar.gz", hash = "sha256:ffb385a7e039654cef1ab9ef32c6fafe283c0c0467bba1d9029738ce4a14a848", size = 196711, upload-time = "2026-06-02T14:34:07.794Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl", hash = "sha256:7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2", size = 65455, upload-time = "2026-06-02T14:34:06.319Z" },
+]
+
+[[package]]
+name = "pyperclip"
+version = "1.11.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/52/d87eba7cb129b81563019d1679026e7a112ef76855d6159d24754dbd2a51/pyperclip-1.11.0.tar.gz", hash = "sha256:244035963e4428530d9e3a6101a1ef97209c6825edab1567beac148ccc1db1b6", size = 12185, upload-time = "2025-09-26T14:40:37.245Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/df/80/fc9d01d5ed37ba4c42ca2b55b4339ae6e200b456be3a1aaddf4a9fa99b8c/pyperclip-1.11.0-py3-none-any.whl", hash = "sha256:299403e9ff44581cb9ba2ffeed69c7aa96a008622ad0c46cb575ca75b5b84273", size = 11063, upload-time = "2025-09-26T14:40:36.069Z" },
 ]
 
 [[package]]
