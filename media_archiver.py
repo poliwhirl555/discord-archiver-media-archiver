@@ -171,12 +171,15 @@ def main():
             args.refresh = ""
         archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
     else:
-        print("Welcome to the Discord Archiver Media Archiver")
+        print("Welcome to the Discord Archiver Media Archiver!")
+        print("Enter \'q\' at any time to quit")
         while True:
             archive_name = ""
             while archive_name == "":
                 print("Please enter the name of the archive you wish to archive from (including the file extension, i.e. .html):")
                 archive_name = input()
+                if archive_name.lower() == "q":
+                    sys.exit()
 
             refresh_token = ""
             while refresh_token == "":
@@ -185,7 +188,11 @@ def main():
                 refresh_token = input()
 
                 if refresh_token.lower() == "n":
+                    refresh_token = ""
                     break
+
+                if refresh_token.lower() == "q":
+                    sys.exit()
 
             do_gifs = None
             while do_gifs == None:
@@ -195,9 +202,14 @@ def main():
                     do_gifs = True
                 elif gif_option_input == "n":
                     do_gifs = False
+                elif gif_option_input == "q":
+                    sys.exit()
 
             print("Archiving...")
             archive_media(archive_name, do_gifs = do_gifs, refresh_token = refresh_token)
+            print("\n")
+            print("Archiving Finished!")
+            print("\n")
 
 
 if __name__ == "__main__":
