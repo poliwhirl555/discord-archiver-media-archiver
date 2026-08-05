@@ -71,7 +71,7 @@ da-ma "archive_(350) Discord_2026-07-16.html" -g -ndc
 ```
 Downloads ***only the Tenor gifs*** from the archive file "archive_(350) Discord_2026-07-16.html".
 
-## Python API
+## Python Library
 
 Since this was written in Python, you can also import the package media_archiver in order to use the underlying methods behind the CLI tool in your Python scripts and programs.
 
@@ -107,4 +107,5 @@ class CDN_Media(media_link: str, save_location: Path, fetch = True)
 - Changed the Regex string for the Discord CDN URLs to be more robust and to capture other types such as the one used in the non-web app, although how useful that is, that is to be seen.
 
 ### V 2.0.0
-- Added functionality to refresh links via (discord_cdn_link_refresher)[https://github.com/poliwhirl555/discord-cdn-link-refresher]
+- Added functionality to refresh links via [discord_cdn_link_refresher](https://github.com/poliwhirl555/discord-cdn-link-refresher)
+- Added an interactive command line interface for a compiled exe version on Windows
