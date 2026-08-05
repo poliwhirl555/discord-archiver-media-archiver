@@ -101,6 +101,9 @@ class CDN_Media(media_link: str, save_location: Path, fetch = True)
 # Despite the name, does still work on gifs
 ```
 
+## Note
+If this package was of use to you, maybe leave a comment in Github Discussions, or a star or a watch, just so I know that someone got use out of something I made, since it's hard to tell otherwise. It's a nice feeling, to know that your efforts weren't wasted on just yourself.
+
 ## Changelog
 
 ### V 1.0.4
