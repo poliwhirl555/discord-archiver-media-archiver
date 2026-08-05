@@ -17,13 +17,17 @@ build-backend = "hatchling.build"
 packages = ["media_archiver.py"]
 exclude = [
     "*.html",
-    "/archive_(349) Test Chat Gif Discord_2026-07-20"
+    "/archive_(349) Test Chat Gif Discord_2026-07-20",
+    "media_archiver.exe",
+    "media_archiver.*/"
 ]
 
 [tool.hatch.build.targets.sdist]
 exclude = [
     "*.html",
-    "/archive_(349) Test Chat Gif Discord_2026-07-20"
+    "/archive_(349) Test Chat Gif Discord_2026-07-20",
+    "media_archiver.exe",
+    "media_archiver.*/"
 ]
 
 [project.scripts]
