@@ -11,10 +11,12 @@ Please run this tool either **immediately** after downloading the archive via [D
 
 ## Installation
 
+### As Python Package
+
 Install from pip with the following command
 
 ```
-pip install discord-archiver-media-archiver
+python3 -m pip install discord-archiver-media-archiver
 ```
 
 Can also be run as a python script via
@@ -22,6 +24,14 @@ Can also be run as a python script via
 ```
 python3 media_archiver.py "archive name"
 ```
+
+### As executable (Windows Only)
+
+- Go to [Releases](https://github.com/poliwhirl555/discord-archiver-media-archiver/releases) on Github and download the media_archiver.exe file
+
+- Place the exe in the same folder as the html or file that you're trying to archive the links from.
+
+- Double click and run the exe and follow the instructions.
 
 
 ## Usage
