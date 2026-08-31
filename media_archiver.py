@@ -166,17 +166,30 @@ class GifFetcher:
     MEDIA_PATTERNS : dict[str, re.Pattern] = {
         "tenor" : re.compile(r'https?://(?:media|c)\.tenor\.com/[\w-]+/[\w.-]+\.(?:gif|webp|mp4|png)', re.IGNORECASE),
         "giphy" : re.compile(r'https?://media\d?\.giphy\.com/media/[\w-]+/(?:giphy\.gif|[\w-]+\.(?:gif|webp|mp4))', re.IGNORECASE),
-        "klipy" : re.compile(r'https?://static\d+\.klipy\.com/ii/[0-9a-f]{32}/[0-9a-f]{2}/[0-9a-f]{2}/\w+\.gif', re.IGNORECASE)
+        "klipy" : re.compile(r'https?://static\d+\.klipy\.com/ii/[0-9a-f]{32}/[0-9a-f]{2}/[0-9a-f]{2}/\w+\.(?:gif|webp|mp4)', re.IGNORECASE)
     }
 
     @staticmethod
-    def fetch_gif_links(line : str) -> list[str] :
+    def fetch_gif_links(line : str, format : str = "webp") -> list[str] :
+        # Need to test if this is overly broad and returns links other than the target link, and if so, then modify regex pattern or add control flow to make it so that it returns only target link
         return_links : list[str] = []
         for platform, pattern in GifFetcher.LINK_PATTERNS.items():
             links = re.findall(pattern, line)
             if links:
                 for link in links:
-                    pass # Finish later
+                    r = requests.get(link, timeout = 30)
+
+                    r.encoding = "utf-8"
+                    found = re.search(GifFetcher.MEDIA_PATTERNS[platform], r.text)
+
+                    for found_link in found:
+                        dot_format = "." + format
+                        if dot_format in found_link:
+                            return_links.append(found_link)
+
+        return return_links
+
+                    
 
 def main():
     parser = argparse.ArgumentParser()
