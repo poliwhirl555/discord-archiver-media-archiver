@@ -169,18 +169,29 @@ class GifFetcher:
         "klipy" : re.compile(r'https?://static\d+\.klipy\.com/ii/[0-9a-f]{32}/[0-9a-f]{2}/[0-9a-f]{2}/\w+\.(?:gif|webp|mp4)', re.IGNORECASE)
     }
 
+    REQUEST_HEADER : dict[str, str] = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                    '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Referer': 'https://www.google.com/',
+    }
+
     @staticmethod
     def fetch_gif_links(line : str, format : str = "webp") -> list[str] :
         # Need to test if this is overly broad and returns links other than the target link, and if so, then modify regex pattern or add control flow to make it so that it returns only target link
         return_links : list[str] = []
         for platform, pattern in GifFetcher.LINK_PATTERNS.items():
             links = re.findall(pattern, line)
+            print(links)
             if links:
                 for link in links:
-                    r = requests.get(link, timeout = 30)
+                    r = requests.get(link, timeout = 30, headers = GifFetcher.REQUEST_HEADER)
 
                     r.encoding = "utf-8"
                     found = re.search(GifFetcher.MEDIA_PATTERNS[platform], r.text)
+
+                    print(r)
 
                     for found_link in found:
                         dot_format = "." + format
@@ -192,59 +203,61 @@ class GifFetcher:
                     
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("archive", type = str, nargs = "?", help = "the Discord archive in the current working directory to archive media from")
-    parser.add_argument("-g", "--gifs", action = "store_true", default = False, help = "enable the download and archival of gifs from Tenor while archiving")
-    parser.add_argument("-ndc", "--no-discord-cdn", action = "store_false", default = True, help = "disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)")
-    parser.add_argument("-gl", "--gif-links", action = "store_true", default = False, help = "replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)")
-    parser.add_argument("-r", "--refresh", action = "store", nargs= "?", const = "", default = False, help = "refresh the cdn links in the file with new ones. Uses the entered Discord auth token, or defaults to the environmental variable DISCORD_TOKEN if none entered")
-    args = parser.parse_args()
-    if len(sys.argv) > 1:
-        if args.refresh == "":
-            args.refresh = os.environ["DISCORD_TOKEN"]
-        else:
-            args.refresh = ""
-        archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
-    else:
-        print("Welcome to the Discord Archiver Media Archiver!")
-        print("Enter \'q\' at any time to quit")
-        while True:
-            archive_name = ""
-            while archive_name == "":
-                print("Please enter the name of the archive you wish to archive from (including the file extension, i.e. .html):")
-                archive_name = input()
-                if archive_name.lower() == "q":
-                    sys.exit()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("archive", type = str, nargs = "?", help = "the Discord archive in the current working directory to archive media from")
+    # parser.add_argument("-g", "--gifs", action = "store_true", default = False, help = "enable the download and archival of gifs from Tenor while archiving")
+    # parser.add_argument("-ndc", "--no-discord-cdn", action = "store_false", default = True, help = "disable downloads from the Discord CDN servers (useful for if the CDN links are already expired or downloaded and you just want to archive gifs)")
+    # parser.add_argument("-gl", "--gif-links", action = "store_true", default = False, help = "replace the gif embed links in the archive with the direct media links from Tenor (does not archive any media, overrides -g)")
+    # parser.add_argument("-r", "--refresh", action = "store", nargs= "?", const = "", default = False, help = "refresh the cdn links in the file with new ones. Uses the entered Discord auth token, or defaults to the environmental variable DISCORD_TOKEN if none entered")
+    # args = parser.parse_args()
+    # if len(sys.argv) > 1:
+    #     if args.refresh == "":
+    #         args.refresh = os.environ["DISCORD_TOKEN"]
+    #     else:
+    #         args.refresh = ""
+    #     archive_media(args.archive, args.no_discord_cdn, args.gifs, args.gif_links, args.refresh)
+    # else:
+    #     print("Welcome to the Discord Archiver Media Archiver!")
+    #     print("Enter \'q\' at any time to quit")
+    #     while True:
+    #         archive_name = ""
+    #         while archive_name == "":
+    #             print("Please enter the name of the archive you wish to archive from (including the file extension, i.e. .html):")
+    #             archive_name = input()
+    #             if archive_name.lower() == "q":
+    #                 sys.exit()
 
-            refresh_token = ""
-            while refresh_token == "":
-                print("Would you like to refresh the links in this file? If so, please enter the Discord authorization token now.")
-                print("Otherwise, enter \'n\'")
-                refresh_token = input()
+    #         refresh_token = ""
+    #         while refresh_token == "":
+    #             print("Would you like to refresh the links in this file? If so, please enter the Discord authorization token now.")
+    #             print("Otherwise, enter \'n\'")
+    #             refresh_token = input()
 
-                if refresh_token.lower() == "n":
-                    refresh_token = ""
-                    break
+    #             if refresh_token.lower() == "n":
+    #                 refresh_token = ""
+    #                 break
 
-                if refresh_token.lower() == "q":
-                    sys.exit()
+    #             if refresh_token.lower() == "q":
+    #                 sys.exit()
 
-            do_gifs = None
-            while do_gifs == None:
-                print("Would you like to archive the gifs? [Y/n]")
-                gif_option_input = input().lower()
-                if gif_option_input == "y":
-                    do_gifs = True
-                elif gif_option_input == "n":
-                    do_gifs = False
-                elif gif_option_input == "q":
-                    sys.exit()
+    #         do_gifs = None
+    #         while do_gifs == None:
+    #             print("Would you like to archive the gifs? [Y/n]")
+    #             gif_option_input = input().lower()
+    #             if gif_option_input == "y":
+    #                 do_gifs = True
+    #             elif gif_option_input == "n":
+    #                 do_gifs = False
+    #             elif gif_option_input == "q":
+    #                 sys.exit()
 
-            print("Archiving...")
-            archive_media(archive_name, do_gifs = do_gifs, refresh_token = refresh_token)
-            print("\n")
-            print("Archiving Finished!")
-            print("\n")
+    #         print("Archiving...")
+    #         archive_media(archive_name, do_gifs = do_gifs, refresh_token = refresh_token)
+    #         print("\n")
+    #         print("Archiving Finished!")
+    #         print("\n")
+
+    print(GifFetcher.fetch_gif_links("https://giphy.com/gifs/moodman-monkey-side-eye-sideeye-H5C8CevNMbpBqNqFjl"))
 
 
 if __name__ == "__main__":
