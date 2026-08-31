@@ -156,6 +156,28 @@ def archive_media(archive_name: str, do_cdn : bool = True, do_gifs : bool = Fals
 
             out.write(out_line)
 
+class GifFetcher:
+    LINK_PATTERNS : dict[str, re.Pattern] = {
+        "tenor" : re.compile(r'https?://(?:www\.)?tenor\.com/view/[\w-]+-\d+', re.IGNORECASE),
+        "giphy" : re.compile(r'https?://(?:www\.)?giphy\.com/(?:gifs|clips)/[\w-]+', re.IGNORECASE),
+        "klipy" : re.compile(r'https?://(?:www\.)?klipy\.com/gifs/[\w]+(?:-[\w]+)*', re.IGNORECASE)
+    }
+
+    MEDIA_PATTERNS : dict[str, re.Pattern] = {
+        "tenor" : re.compile(r'https?://(?:media|c)\.tenor\.com/[\w-]+/[\w.-]+\.(?:gif|webp|mp4|png)', re.IGNORECASE),
+        "giphy" : re.compile(r'https?://media\d?\.giphy\.com/media/[\w-]+/(?:giphy\.gif|[\w-]+\.(?:gif|webp|mp4))', re.IGNORECASE),
+        "klipy" : re.compile(r'https?://static\d+\.klipy\.com/ii/[0-9a-f]{32}/[0-9a-f]{2}/[0-9a-f]{2}/\w+\.gif', re.IGNORECASE)
+    }
+
+    @staticmethod
+    def fetch_gif_links(line : str) -> list[str] :
+        return_links : list[str] = []
+        for platform, pattern in GifFetcher.LINK_PATTERNS.items():
+            links = re.findall(pattern, line)
+            if links:
+                for link in links:
+                    pass # Finish later
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("archive", type = str, nargs = "?", help = "the Discord archive in the current working directory to archive media from")
