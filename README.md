@@ -120,5 +120,8 @@ If this package was of use to you, maybe leave a comment in Github Discussions, 
 - Changed the Regex string for the Discord CDN URLs to be more robust and to capture other types such as the one used in the non-web app, although how useful that is, that is to be seen.
 
 ### V 2.0.0
-- Added functionality to refresh links via [discord_cdn_link_refresher](https://github.com/poliwhirl555/discord-cdn-link-refresher)
-- Added an interactive command line interface for a compiled exe version on Windows
+- Added functionality to refresh links via [discord_cdn_link_refresher](https://github.com/poliwhirl555/discord-cdn-link-refresher).
+- Added an interactive command line interface for a compiled exe version on Windows.
+
+## V 2.0.1
+- Updated python certif to revoke eMudhra compromised certificates.
